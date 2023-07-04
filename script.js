@@ -2,7 +2,7 @@ $(document).ready(async function () {
   var grid = [];
   var selectedCell = null; // New variable to store selected cell
   var percentage;
-  var mistakes = 0;
+  var label
 
   await $('#start').on('click', function () {
     var menuChoice = $('#menuSelect').val(); // Get the selected menu choice
@@ -10,29 +10,38 @@ $(document).ready(async function () {
     switch (menuChoice) {
       case "very_easy":
         percentage = 0.85;
+        label = "Very Easy"
         break;
       case "easy":
         percentage = 0.70;
+        label = "Easy"
         break;
       case "normal":
         percentage = 0.65;
+        label = "Normal"
         break;
       case "hard":
         percentage = 0.50;
+        label = "Hard"
         break;
       case "very_hard":
         percentage = 0.35;
+        label = "Very Hard"
         break;
       case "impossible":
         percentage = 0.15;
+        label = "Impossible"
         break;
       default:
         percentage = 0.65;
+        label = "Normal"
         break;
     }
 
     $('.game-container').show();
     $('.Menu').hide();
+
+    $('#difficulty-value').html(label);
 
     console.log(`User selected ${menuChoice} with percentage ${percentage}`);
   });
