@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zero's Sudoku</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="Menu">
+        <h1>Zero's Sudoku</h1>
+            <label for="menuSelect">Select the difficulty:</label>
+            <select id="menuSelect" name="difficulty">
+                <option value="very_easy">Very Easy</option>
+                <option value="easy">Easy</option>
+                <option value="normal">Normal</option>
+                <option value="hard">Hard</option>
+                <option value="very_hard">Very Hard</option>
+                <option value="impossible">Impossible</option>
+            </select>
+            <br>
+            <button id="start" type="button">Start</button>
+        </div>
+
+        <div class="game-container">
+            <h1>Sudoku Game</h1>
+            <div id="game-status">
+                <span id="difficulty">
+                    <span id="difficulty-label">Difficulty: </span>
+                    <br>
+                    <span id="difficulty-value">Very Easy</span>
+                </span>
+                <span id="mistakes">
+                    <span id="mistakes-label">Mistakes: </span>
+                    <br>
+                    <span id="mistakes-value">0</span>
+                </span>
+                <span id="timer">
+                    <span id="time-label">Time: </span>
+                    <br>
+                    <span id="time-value">0:00</span> 
+                </span>
+            </div>
+            <table id="sudoku-board"></table>
+            <button id="undo-button">Undo</button>
+            <div id="number-row"></div>
+        </div>
+
+        <div id="end-screen">
+            <h1>Congratulations!</h1>
+            <p>You have successfully completed the Sudoku.</p>
+            <button id="play-again" type="button">Play Again</button>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
