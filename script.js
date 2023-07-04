@@ -2,6 +2,7 @@ $(document).ready(async function () {
   var grid = [];
   var selectedCell = null; // New variable to store selected cell
   var percentage;
+  var mistakes = 0;
 
   await $('#start').on('click', function () {
     var menuChoice = $('#menuSelect').val(); // Get the selected menu choice
@@ -214,6 +215,8 @@ $(document).ready(async function () {
       if (!isCorrect) {
         // Add wrong class to highlight the cell
         selectedCell.addClass('incorrect');
+        var mistakesElement = $('#mistakes-value').text();
+        $('#mistakes-value').text(parseInt(mistakesElement) + 1);
       }
 
       renderGrid();
@@ -399,59 +402,61 @@ $(document).ready(async function () {
     return true;
   }
 
-  // Function to solve the Sudoku using backtracking with randomization
-  function solveSudoku() {
-    var emptyCells = findEmptyCells();
+// Function to solve the Sudoku using backtracking with randomization
+function solveSudoku() {
+  var emptyCells = findEmptyCells();
 
-    if (emptyCells.length === 0) {
-      return true; // All cells filled, Sudoku solved
+  if (emptyCells.length === 0) {
+    return true; // All cells filled, Sudoku solved
+  }
+
+  var randomOrder = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  shuffleArray(randomOrder);
+
+  var cell = emptyCells[0]; // Select the first empty cell
+  var row = cell.row;
+  var col = cell.col;
+
+  for (var i = 0; i < randomOrder.length; i++) {
+    var num = randomOrder[i];
+    if (isValidMove(row, col, num)) {
+      grid[row][col] = num;
+
+      if (solveSudoku()) {
+        return true;
+      }
+
+      grid[row][col] = 0;
     }
+  }
 
-    // Shuffle the empty cells array to introduce randomness
-    shuffleArray(emptyCells);
+  return false;
+}
 
-    var row = emptyCells[0].row;
-    var col = emptyCells[0].col;
+// Helper function to shuffle an array using Fisher-Yates algorithm
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
 
-    for (var num = 1; num <= 9; num++) {
-      if (isValidMove(row, col, num)) {
-        grid[row][col] = num;
+// Function to find all empty cells in the Sudoku grid
+function findEmptyCells() {
+  var emptyCells = [];
 
-        if (solveSudoku()) {
-          return true;
-        }
-
-        grid[row][col] = 0;
+  for (var row = 0; row < 9; row++) {
+    for (var col = 0; col < 9; col++) {
+      if (grid[row][col] === 0) {
+        emptyCells.push({ row: row, col: col });
       }
     }
-
-    return false;
   }
 
-  // Function to find all empty cells in the Sudoku grid
-  function findEmptyCells() {
-    var emptyCells = [];
-
-    for (var row = 0; row < 9; row++) {
-      for (var col = 0; col < 9; col++) {
-        if (grid[row][col] === 0) {
-          emptyCells.push({ row: row, col: col });
-        }
-      }
-    }
-
-    return emptyCells;
-  }
-
-  // Function to shuffle an array using the Fisher-Yates algorithm
-  function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-  }
+  return emptyCells;
+}
 
   // Function to check if a move is valid in the Sudoku grid
   function isValidMove(row, col, num) {
