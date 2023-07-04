@@ -399,25 +399,58 @@ $(document).ready(async function () {
     return true;
   }
 
-  // Function to solve the Sudoku using backtracking
+  // Function to solve the Sudoku using backtracking with randomization
   function solveSudoku() {
+    var emptyCells = findEmptyCells();
+
+    if (emptyCells.length === 0) {
+      return true; // All cells filled, Sudoku solved
+    }
+
+    // Shuffle the empty cells array to introduce randomness
+    shuffleArray(emptyCells);
+
+    var row = emptyCells[0].row;
+    var col = emptyCells[0].col;
+
+    for (var num = 1; num <= 9; num++) {
+      if (isValidMove(row, col, num)) {
+        grid[row][col] = num;
+
+        if (solveSudoku()) {
+          return true;
+        }
+
+        grid[row][col] = 0;
+      }
+    }
+
+    return false;
+  }
+
+  // Function to find all empty cells in the Sudoku grid
+  function findEmptyCells() {
+    var emptyCells = [];
+
     for (var row = 0; row < 9; row++) {
       for (var col = 0; col < 9; col++) {
         if (grid[row][col] === 0) {
-          for (var num = 1; num <= 9; num++) {
-            if (isValidMove(row, col, num)) {
-              grid[row][col] = num;
-              if (solveSudoku()) {
-                return true;
-              }
-              grid[row][col] = 0;
-            }
-          }
-          return false;
+          emptyCells.push({ row: row, col: col });
         }
       }
     }
-    return true;
+
+    return emptyCells;
+  }
+
+  // Function to shuffle an array using the Fisher-Yates algorithm
+  function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
   }
 
   // Function to check if a move is valid in the Sudoku grid
