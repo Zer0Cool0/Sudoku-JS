@@ -207,6 +207,10 @@ $(document).ready(async function () {
         return parseInt($(this).text()) === number;
       }).addClass('highlight-number');
 
+      $('td').filter(function () {
+        return parseInt($(this).text()) !== number;
+      }).removeClass('highlight-number');
+
       // Get the row and column indices of the selected cell
       var row = selectedCell.parent().index();
       var col = selectedCell.index();
@@ -247,7 +251,7 @@ $(document).ready(async function () {
       }
 
       renderGrid();
-
+    
       // Count the occurrences of the selected number in the grid
       var numberOccurrences = countNumberOccurrences();
 
