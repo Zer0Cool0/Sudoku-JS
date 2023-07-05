@@ -197,6 +197,12 @@ $(document).ready(async function () {
     if (selectedCell !== null && !selectedCell.hasClass('given')) {
       var number = parseInt($(this).text());
 
+      if (selectedCell !== null) {
+        $('td').removeClass('selected');
+        selectedCell.addClass('selected');
+        $('td').removeClass('incorrect');
+      }
+
       $('td').filter(function () {
         return parseInt($(this).text()) === number;
       }).addClass('highlight-number');
@@ -223,12 +229,21 @@ $(document).ready(async function () {
 
       if (!isCorrect) {
         // Add wrong class to highlight the cell
-        selectedCell.addClass('incorrect');
+        selectedCell.addClass('incorrect-input');
         var mistakesElement = $('#mistakes-value').text();
         $('#mistakes-value').text(parseInt(mistakesElement) + 1);
+        // add incorrect class to the other number on the row
+        $('tr').eq(row).find('td').filter(function () {
+          return parseInt($(this).text()) === number;
+        }).addClass('incorrect');
+        // add incorrect class to the other number on the column
+        $('tr td:nth-child(' + (col + 1) + ')').filter(function () {
+          return parseInt($(this).text()) === number;
+        }).addClass('incorrect');
       } else {
         selectedCell.addClass('user-inputted-value');
         selectedCell.removeClass('incorrect');
+        selectedCell.removeClass('incorrect-input');
       }
 
       renderGrid();
@@ -240,6 +255,15 @@ $(document).ready(async function () {
       if (numberOccurrences[number] >= 9) {
         $(this).prop('disabled', true);
       }
+
+      var numberrow = $('#number-row');
+      numberrow.find('button').each(function () {
+        if ($(this).prop('disabled')) {
+          if (numberOccurrences[$(this).text()] < 9) {
+            $(this).prop('disabled', false);
+          }
+        }
+      });
     }
 
     // if there are no more empty cells and no cells have the incorrect class
