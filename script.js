@@ -226,6 +226,9 @@ $(document).ready(async function () {
         selectedCell.addClass('incorrect');
         var mistakesElement = $('#mistakes-value').text();
         $('#mistakes-value').text(parseInt(mistakesElement) + 1);
+      } else {
+        selectedCell.addClass('user-inputted-value');
+        selectedCell.removeClass('incorrect');
       }
 
       renderGrid();
@@ -509,8 +512,6 @@ function findEmptyCells() {
 
         if (value !== 0) {
           cell.text(value);
-          cell.addClass('given');
-          input.prop('readonly', true);
         } else {
           cell.text('');
           cell.removeClass('given');
