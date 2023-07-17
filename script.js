@@ -109,8 +109,7 @@ $(document).ready(async function () {
 
       // Remove highlighting from previously selected cell
       if (selectedCell !== null) {
-        $('td').removeClass('selected');
-        selectedCell.addClass('selected');
+        $('td').removeClass('incorrect-input');
         $('td').removeClass('incorrect');
       }
 
@@ -348,7 +347,7 @@ $(document).ready(async function () {
     solveSudoku(grid);
 
     // Remove cells to achieve desired fill percentage
-    removeCells(grid, fillPercentage); // 30% fill percentage
+    removeCells(grid, fillPercentage);
 
     // Generate the HTML grid
     var table = $("#sudoku-board");
